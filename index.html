@@ -1,0 +1,263 @@
+<!doctype html>
+
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Untitled</title>
+	<link rel="stylesheet" href="bootstrap-3.2.0-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" href="bootstrap.modified.css">
+</head>
+<body>
+	<div id="build-tree">
+		<div id="tree">
+			<div class="modal-header">
+				<div class="footer-on-header">
+					<button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+					<button id="save-tree" type="button" class="btn btn-success">Save</button>
+				</div>
+				<h4 class="modal-title">Build new decision tree</h4>
+			</div>
+			<div class="modal-body" style="max-height: 600px; overflow-x: auto; overflow-y: auto">
+			<!--
+				<button id="add-first-question" class="btn btn-info" data-toggle="modal" data-target="#question"><i class="glyphicon glyphicon-plus"></i> Add question</button>
+			-->
+			<span class="badge add-answer progress-bar-warning hide" data-toggle="modal" data-target="#answer"><i class="glyphicon glyphicon-plus"></i>A</span>
+			<span class="badge add-question progress-bar-info hide" data-toggle="modal" data-target="#question"><i class="glyphicon glyphicon-plus"></i>Q</span>
+			<span class="badge add-solution progress-bar-success hide" data-toggle="modal" data-target="#solution"><i class="glyphicon glyphicon-plus"></i>S</span>
+			<span class="badge delete progress-bar-danger hide" data-toggle="modal" data-target="#delete"><i class="glyphicon glyphicon-trash"></i></span>
+
+			<table id="tree-table"></table>
+		</div>
+
+	</div>
+
+	<div id="question" class="modal fade" tabindex="-1" data-focus-on="input:first" style="display: none;">
+		<div class="modal-header bg-info">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h4 class="modal-title">Add new question</h4>
+		</div>
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="question">Question Name</label>
+				<input id="question-name" type="text" class="form-control"/>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+			<button id="save-question" type="button" data-dismiss="modal" class="save btn btn-info">Save</button>
+		</div>
+	</div>
+
+	<div id="answer" class="modal fade" tabindex="-1" data-focus-on="input:first" style="display: none;">
+		<div class="modal-header bg-warning">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h4 class="modal-title">Add new answer</h4>
+		</div>
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="answer">Answer Name</label>
+				<input id="answer-name" type="text" class="form-control"/>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+			<button id="save-answer" type="button" data-dismiss="modal" class="save btn btn-warning">Save</button>
+		</div>
+	</div>
+
+
+	<div id="solution" class="modal fade" tabindex="-1" data-focus-on="input:first" style="display: none;">
+		<div class="modal-header bg-success">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h4 class="modal-title">Add new solution</h4>
+		</div>
+		<div class="modal-body">
+			<div class="form-group">
+				<label for="question">Solution Name</label>
+				<input id="solution-name" type="text" class="form-control"/>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+			<button id="save-solution" type="button" data-dismiss="modal" class="save btn btn-success">Save</button>
+		</div>
+	</div>
+
+	<div id="delete" class="modal fade" tabindex="-1" data-focus-on="input:first" style="display: none;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h4 class="modal-title">Delete a tree node</h4>
+		</div>
+		<div class="modal-body">
+			<h2>Recursive operation ... and grab a image here, LEO !!!</h2>
+		</div>
+		<div class="modal-footer">
+			<button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+			<button id="delete-node" type="button" data-dismiss="modal" class="delete btn btn-danger">Delete</button>
+		</div>
+	</div>
+</div>
+
+
+<script src="scripts/jquery-1.11.1.min.js"></script>
+<script src="bootstrap-3.2.0-dist/js/bootstrap.min.js"></script>
+
+<script>
+
+	var buildTree = {
+		addQuestionNode: function(rowText, anchorRow) {
+
+			var anchorRow = ("tree" == $(anchorRow).attr("id") ? $("#tree-table") : $(anchorRow));
+
+			if ($(anchorRow).hasClass("bg-warning")) {
+				anchorRow = $(anchorRow).parent().parent();
+			}
+
+			var actionButton = $(".add-answer").eq(0).clone().removeClass('hide');
+			var deleteButton = $(".delete").eq(0).clone().removeClass('hide');
+			$(anchorRow).append(
+				$("<tr>")
+				.append($("<td>").addClass("vert-align")
+					.append($("<div>").addClass("bg-info nodes")
+						.append($("<div class='nodes-header'>Question</div>"))
+						.append($("<div class='nodes-body'>" + rowText + "</div>"))
+						.append($("<div>").addClass("nodes-footer")
+							.append($(actionButton))
+							.append($(deleteButton))
+							)
+						)
+					)
+				);
+			return;
+		},
+
+		addAnswerNode: function(rowText, anchorRow) {
+
+			if ($(anchorRow).hasClass("bg-info")) {
+				anchorRow = $(anchorRow).parent().parent();
+			}
+
+			// if ("TD" == $(anchorRow)[0].nodeName) {
+			// 	anchorRow = $(anchorRow).parent();
+			// }
+
+			var questionButton = $(".add-question").eq(0).clone().removeClass('hide');
+			var deleteButton = $(".delete").eq(0).clone().removeClass('hide');
+			var solutionButton = $(".add-solution").eq(0).clone().removeClass('hide');
+			$(anchorRow).append(
+				$("<tr>")
+				.append($("<td>").addClass("vert-align")
+					.append($("<div>").addClass("bg-warning nodes")
+						.append($("<div class='nodes-header'>Answer</div>"))
+						.append($("<div class='nodes-body'>" + rowText + "</div>"))
+						.append($("<div>").addClass("nodes-footer")
+							.append($(questionButton))
+							.append($(solutionButton))
+							.append($(deleteButton))
+							)
+						)
+					)
+				);
+			return;
+		},
+
+		addSolutionNode: function(rowText, anchorRow) {
+
+			var anchorRow = ("tree" == $(anchorRow).attr("id") ? $("#tree-table") : $(anchorRow));
+
+			if ($(anchorRow).hasClass("bg-warning")) {
+				anchorRow = $(anchorRow).parent().parent();
+			}
+
+			var actionButton = $(".add-answer").eq(0).clone().removeClass('hide');
+			var deleteButton = $(".delete").eq(0).clone().removeClass('hide');
+			$(anchorRow).append(
+				$("<tr>")
+				.append($("<td>").addClass("vert-align")
+					.append($("<div>").addClass("bg-sucess nodes")
+						.append($("<div class='nodes-header'>Solution</div>"))
+						.append($("<div class='nodes-body'>" + rowText + "</div>"))
+						.append($("<div>").addClass("nodes-footer")
+							.append($(deleteButton))
+							)
+						)
+					)
+				);
+			return;
+		},
+	}
+
+
+	var targetButton;
+
+	$("#question, #answer, #solution").on('show.bs.modal', function(event){
+		$("#tree button").prop("disabled", "disabled");
+		targetButton = $(event.relatedTarget);
+	});
+
+	$("#save-question, #save-answer, #save-solution").on('click', function() {
+
+		var targetRow = 0 == targetButton.length ? $("#tree-table") : targetButton.parent().parent();
+
+			// $("#add-first-question").remove(); // remove target button only if it is add-question and first on tree
+			if( $(targetButton).hasClass('add-question') || $(targetButton).hasClass('add-solution') ) {
+				$(targetButton).siblings().not(".delete").hide();
+				$(targetButton).hide();
+			}
+
+			var modalCase = $(this).parents(".modal").attr("id"); //return modal id
+
+			if ("question" == modalCase) {
+				var questionText = $("#question").find("#question-name").val();
+				buildTree.addQuestionNode(questionText, targetRow);
+			}
+
+			if("answer" == modalCase) {
+				var answerText = $("#answer").find("#answer-name").val();
+				buildTree.addAnswerNode(answerText, targetRow);
+			}
+
+			if("solution" == modalCase)  {
+				var solutionText = $("#solution").find("#solution-name").val();
+				buildTree.addSolutionNode(solutionText, targetRow);
+
+			}
+		});
+	$("#question, #answer, #solution").on('hide.bs.modal', function(e) {
+		$("#tree button").prop("disabled", false);
+		$("input", this).val("");
+		$(this).removeData();
+	});
+
+
+	$(function(){
+		$("#question").modal("show");
+	});
+
+</script>
+
+</body>
+</html>
+
+
+<!-- 
+<table>
+	<tbody>
+	<?php foreach($questions as $question) : ?>
+		<tr>
+			<td>
+				<?php echo $question["name"] ?>
+			</td>
+			<?php foreach($answers as $answer) : ?>
+				<tr>
+					!!!!! RECURSIV --- BUILD SOME HELPERS HERE !!!!
+				<tr>
+			<?php endforeach ?>
+		</tr>
+	<?php endforeach ?>
+	</tbody>
+</table>
+
+-->

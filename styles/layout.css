@@ -1,0 +1,154 @@
+* {
+	font-family: 'Roboto Condensed', sans-serif;
+	font-style: bold;
+	word-wrap: break-word;
+}
+
+body {
+	overflow-y: hidden;
+	overflow-x: hidden;
+
+}
+
+.vertical-banner #banner {
+	position: absolute;
+	bottom: 45%;
+	width: 100%;
+	max-height: 800px;
+	left: -47.2%;
+	color: #e2e2e2;
+	text-align: center;
+	display: block;
+	text-align: center;
+	font-size: 64pt;
+	font-weight: bold;
+
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+	transform: rotate(-90deg);
+}
+
+.vertical-banner #banner-shadow {
+	position: absolute;
+	bottom: 45%;
+	width: 100%;
+	max-height: 800px;
+	left: -47%;
+	color: #f2f2f2;
+	text-align: center;
+	display: block;
+	text-align: center;
+	font-size: 64pt;
+	font-weight: bold;
+
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+	transform: rotate(-90deg);
+}
+
+
+@-webkit-keyframes fadeIn {
+	from {
+		opacity: 0
+	}
+
+	to {
+		opacity: 1
+	}
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0
+	}
+
+	to {
+		opacity: 1
+	}
+}
+
+#textContent {
+	font-size: 16px;
+}
+/*a:link {
+
+	color:rgb(0,0,0);
+	font-weight:bold;
+}
+a:visited {
+	color:rgb(0,0,0);
+	font-weight:bold;
+}
+*/
+.bs-docs-nav {
+	margin-bottom: 0;
+	background-color: #fff;
+	border-bottom: 0;
+}
+
+#wrapper {
+	margin: 0 auto;
+	width: 90%;
+	padding: 10px;
+}
+
+.a-nav {
+	font-family: 'Roboto Condensed', sans-serif;
+	font-style: bold;
+	color: #000000;
+}
+.a-nav:hover {
+	opacity: 0.5;
+}
+
+.hightlight{
+	background-color: #f7f7f9;
+	border: 1px solid #e1e1e8;
+	padding: 9px 14px;
+	margin-top: 50px;
+}
+
+.select {
+	margin-bottom: 50px;
+}
+
+.col-centered{
+	float: none;
+	margin: 0 auto;
+}
+
+label{
+	cursor: pointer;
+}
+
+.input-group-addon {
+	padding: 6px;
+}
+
+#nav-bar{
+	font-family: 'Roboto Condensed', sans-serif;
+	font-weight: bold;
+	color: #000000;
+}
+
+#table-title span {
+	animation: fadeIn 2s;
+	-webkit-animation: fadeIn 1s;
+	-moz-animation: fadeIn 1s;
+}
+
+.nomenclator-list-table {
+	animation: fadeIn 2s;
+	-webkit-animation: fadeIn 1s;
+	-moz-animation: fadeIn 1s;
+}
+
+.nomenclator-list-table tr th:last-child {
+	width: 50px;\
+}
